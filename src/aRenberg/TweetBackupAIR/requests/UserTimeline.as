@@ -1,12 +1,13 @@
 package aRenberg.TweetBackupAIR.requests 
 {
+	import aRenberg.net.RequestQueue;
 	import aRenberg.TweetBackupAIR.requests.TwitterRequest;
 
 	public class UserTimeline extends TwitterRequest 
 	{
-		public function UserTimeline() 
+		public function UserTimeline(requestQueue:RequestQueue = null) 
 		{
-			super("http://api.twitter.com/1/statuses/user_timeline.xml");
+			super("http://api.twitter.com/1/statuses/user_timeline.xml", requestQueue);
 		}
 			
 		override protected function generateVars():Object

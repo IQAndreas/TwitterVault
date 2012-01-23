@@ -1,19 +1,29 @@
 package aRenberg.TweetBackupAIR.requests 
 {
-	import aRenberg.net.XMLRequest;
+	import aRenberg.net.RequestQueue;
+	import aRenberg.net.Request;
 	public class TwitterRequest 
 	{
-		public function TwitterRequest(url:String)
+		public function TwitterRequest(url:String, requestQueue:RequestQueue = null)
 		{
+			this.requestQueue = requestQueue;
 			this.url = url;
 		}
 		
-		public function request(dataCallback:Function, errorCallback:Function = null, maxAttempts:uint = 1):XMLRequest
+		public function request(dataCallback:Function, errorCallback:Function = null, maxAttempts:uint = 1):Request
 		{
 			if (!this.validate()) { return null; } //TODO: Add some sort of error message
-			return new XMLRequest(this.url, this.generateVars(), dataCallback, errorCallback, maxAttempts);
+			
+			if (requestQueue)
+			{
+				return requestQueue.getXML(this.url, this.generateVars(), dataCallback, errorCallback, maxAttempts);
+			}
+			
+			//else
+			return Request.getXML(this.url, this.generateVars(), dataCallback, errorCallback, maxAttempts);
 		}
 		
+		protected var requestQueue:RequestQueue;
 		protected var url:String;
 		
 		protected function validate():Boolean
